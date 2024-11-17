@@ -4,10 +4,10 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 
 export default function NavComp() {
-  const { user, isLoaded } = useUser();
+  const { user } = useUser();
 
   return (
-    <header className="bg-white">
+    <header className="backdrop-blur-lg">
       <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
         <Link className="block text-teal-600" href="/home">
           <span className="sr-only">Home</span>
@@ -56,7 +56,7 @@ export default function NavComp() {
           </nav>
 
           <div className="flex items-center gap-4">
-            {!user && !isLoaded ? (
+            {!user ? (
               <div className="sm:flex sm:gap-4">
                 <SignInButton />
                 <SignUpButton />
