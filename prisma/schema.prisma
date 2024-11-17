@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Hour {
+  id          String   @id @default(uuid())
+  userId      String // Clerk's user ID
+  date        DateTime // Date the hours are logged
+  hoursWorked Int // Number of hours worked
+  category    String // Category: e.g., Work, Study, etc.
+  description String? // Optional description
+  createdAt   DateTime @default(now())
+}
+
+model WeeklySummary {
+  id         String   @id @default(uuid())
+  userId     String // Clerk's user ID
+  startDate  DateTime // Start date of the week
+  endDate    DateTime // End date of the week
+  totalHours Int // Total hours worked during the week
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, startDate])
+}
+
+model MonthlySummary {
+  id         String   @id @default(uuid())
+  userId     String // Clerk's user ID
+  month      Int // Month (1-12)
+  year       Int // Year
+  totalHours Int // Total hours worked in the month
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, month, year])
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  color     String? // Optional: For UI, assign a color to the category
+  createdAt DateTime @default(now())
+}
+
+model ActivityLog {
+  id        String   @id @default(uuid())
+  userId    String // Clerk's user ID
+  action    String // e.g., "Added hours", "Updated summary"
+  createdAt DateTime @default(now())
+}
